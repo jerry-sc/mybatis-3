@@ -20,6 +20,7 @@ import java.util.Locale;
 import org.apache.ibatis.reflection.ReflectionException;
 
 /**
+ * 名称工具类，判断给定一个字符串，是属性还是getter方法还是setter方法
  * @author Clinton Begin
  */
 public final class PropertyNamer {

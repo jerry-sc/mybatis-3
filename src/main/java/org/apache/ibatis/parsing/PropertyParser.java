@@ -18,6 +18,9 @@ package org.apache.ibatis.parsing;
 import java.util.Properties;
 
 /**
+ * 指定是否开启默认值功能（默认false），以及默认值中key与value的分隔符默认值（默认:）
+ * 如果开启，可提供这样的功能： ${username:root} 表示，如果没有定义username 的key，那么默认使用root，如果定义了，则使用定义值
+ *
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */
@@ -75,6 +78,7 @@ public class PropertyParser {
     public String handleToken(String content) {
       if (variables != null) {
         String key = content;
+        // 如果开启默认值，那么进一步根据分隔符解析
         if (enableDefaultValue) {
           final int separatorIndex = content.indexOf(defaultValueSeparator);
           String defaultValue = null;
@@ -86,6 +90,7 @@ public class PropertyParser {
             return variables.getProperty(key, defaultValue);
           }
         }
+        // 如果没有启用默认值配置，那么直接根据key返回
         if (variables.containsKey(key)) {
           return variables.getProperty(key);
         }

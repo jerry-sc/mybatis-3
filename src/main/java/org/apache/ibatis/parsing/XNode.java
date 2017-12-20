@@ -362,7 +362,7 @@ public class XNode {
 
   private String parseBody(Node node) {
     String data = getBodyData(node);
-    if (data == null) {
+    if (data == null) { // 如果不是文本节点，则递归子节点继续
       NodeList children = node.getChildNodes();
       for (int i = 0; i < children.getLength(); i++) {
         Node child = children.item(i);
@@ -377,7 +377,7 @@ public class XNode {
 
   private String getBodyData(Node child) {
     if (child.getNodeType() == Node.CDATA_SECTION_NODE
-        || child.getNodeType() == Node.TEXT_NODE) {
+        || child.getNodeType() == Node.TEXT_NODE) { // 只处理文本节点
       String data = ((CharacterData) child).getData();
       data = PropertyParser.parse(data, variables);
       return data;

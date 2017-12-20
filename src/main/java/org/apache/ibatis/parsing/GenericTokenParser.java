@@ -16,6 +16,10 @@
 package org.apache.ibatis.parsing;
 
 /**
+ * 通用的占位符解析器，具体解析策略调用handler进行具体解析，类似策略模式
+ *
+ * 注意的是，此类是通用类，并不只是解析默认值，之后的动态SQL也会重用该类完成解析，只不过传入了不同的TokenHandler实现
+ *
  * @author Clinton Begin
  */
 public class GenericTokenParser {
@@ -27,9 +31,13 @@ public class GenericTokenParser {
   public GenericTokenParser(String openToken, String closeToken, TokenHandler handler) {
     this.openToken = openToken;
     this.closeToken = closeToken;
-    this.handler = handler;
+    this.handler = handler; // 具体解析执行器
   }
 
+  /**
+   * 解析xml中节点内容，如果有占位符，则进一步解析
+   * @param text xml节点内容
+   */
   public String parse(String text) {
     if (text == null || text.isEmpty()) {
       return "";
