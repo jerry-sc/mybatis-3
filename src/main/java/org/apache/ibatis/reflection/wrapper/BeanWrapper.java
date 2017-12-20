@@ -31,6 +31,9 @@ import org.apache.ibatis.reflection.property.PropertyTokenizer;
  */
 public class BeanWrapper extends BaseWrapper {
 
+  /**
+   * JavaBean 对象
+   */
   private final Object object;
   private final MetaClass metaClass;
 
@@ -46,7 +49,7 @@ public class BeanWrapper extends BaseWrapper {
       Object collection = resolveCollection(prop, object);
       return getCollectionValue(prop, collection);
     } else {
-      return getBeanProperty(prop, object);
+      return getBeanProperty(prop, object); // 不是集合类型，是普通类型
     }
   }
 
@@ -161,7 +164,7 @@ public class BeanWrapper extends BaseWrapper {
     try {
       Invoker method = metaClass.getGetInvoker(prop.getName());
       try {
-        return method.invoke(object, NO_ARGUMENTS);
+        return method.invoke(object, NO_ARGUMENTS);   // 直接通过方法反射，get到对象中的数据
       } catch (Throwable t) {
         throw ExceptionUtil.unwrapThrowable(t);
       }

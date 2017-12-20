@@ -68,7 +68,7 @@ public class Reflector {
         addDefaultConstructor(clazz);
         addGetMethods(clazz);
         addSetMethods(clazz);
-        addFields(clazz);
+        addFields(clazz);   // 处理没有getter/setter方法的字段，然后为这些字段创建Invoker对象加入到集合中
         readablePropertyNames = getMethods.keySet().toArray(new String[getMethods.keySet().size()]);
         writeablePropertyNames = setMethods.keySet().toArray(new String[setMethods.keySet().size()]);
         for (String propName : readablePropertyNames) {

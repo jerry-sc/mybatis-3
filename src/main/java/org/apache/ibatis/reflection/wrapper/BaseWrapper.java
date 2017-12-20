@@ -46,7 +46,7 @@ public abstract class BaseWrapper implements ObjectWrapper {
     if (collection instanceof Map) {
       return ((Map) collection).get(prop.getIndex());
     } else {
-      int i = Integer.parseInt(prop.getIndex());
+      int i = Integer.parseInt(prop.getIndex());  // 如果是其他集合，索引就是下标
       if (collection instanceof List) {
         return ((List) collection).get(i);
       } else if (collection instanceof Object[]) {

@@ -31,6 +31,7 @@ import java.util.TreeSet;
 import org.apache.ibatis.reflection.ReflectionException;
 
 /**
+ * 一个反射工厂
  * @author Clinton Begin
  */
 public class DefaultObjectFactory implements ObjectFactory, Serializable {
@@ -55,6 +56,9 @@ public class DefaultObjectFactory implements ObjectFactory, Serializable {
     // no props for default
   }
 
+  /**
+   * 根据参数列表，选择合适的构造器，进行反射构造对象
+   */
   private  <T> T instantiateClass(Class<T> type, List<Class<?>> constructorArgTypes, List<Object> constructorArgs) {
     try {
       Constructor<T> constructor;

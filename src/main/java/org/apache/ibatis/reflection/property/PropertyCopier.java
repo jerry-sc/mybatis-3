@@ -18,6 +18,8 @@ package org.apache.ibatis.reflection.property;
 import java.lang.reflect.Field;
 
 /**
+ * 主要实现相同类型的两个对象之间的属性进行拷贝
+ *
  * @author Clinton Begin
  */
 public final class PropertyCopier {

@@ -18,6 +18,7 @@ package org.apache.ibatis.reflection.wrapper;
 import org.apache.ibatis.reflection.MetaObject;
 
 /**
+ * 负责ObjectWrapper对象创建
  * @author Clinton Begin
  */
 public interface ObjectWrapperFactory {
