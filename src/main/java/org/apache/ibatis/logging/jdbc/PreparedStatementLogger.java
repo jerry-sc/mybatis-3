@@ -46,12 +46,13 @@ public final class PreparedStatementLogger extends BaseJdbcLogger implements Inv
     try {
       if (Object.class.equals(method.getDeclaringClass())) {
         return method.invoke(this, params);
-      }          
+      }
+      // 对需要日志记录的方法进行记录
       if (EXECUTE_METHODS.contains(method.getName())) {
         if (isDebugEnabled()) {
           debug("Parameters: " + getParameterValueString(), true);
         }
-        clearColumnInfo();
+        clearColumnInfo();  // 清空集合，便于下次访问
         if ("executeQuery".equals(method.getName())) {
           ResultSet rs = (ResultSet) method.invoke(statement, params);
           return rs == null ? null : ResultSetLogger.newInstance(rs, statementLog, queryStack);
@@ -62,7 +63,7 @@ public final class PreparedStatementLogger extends BaseJdbcLogger implements Inv
         if ("setNull".equals(method.getName())) {
           setColumn(params[0], null);
         } else {
-          setColumn(params[0], params[1]);
+          setColumn(params[0], params[1]);  // 事先记录参数，便于后面执行时打印
         }
         return method.invoke(statement, params);
       } else if ("getResultSet".equals(method.getName())) {

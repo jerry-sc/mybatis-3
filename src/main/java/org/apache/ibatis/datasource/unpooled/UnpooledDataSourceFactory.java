@@ -34,20 +34,20 @@ public class UnpooledDataSourceFactory implements DataSourceFactory {
 
   protected DataSource dataSource;
 
-  public UnpooledDataSourceFactory() {
+  public UnpooledDataSourceFactory() {  // 会直接创建数据源对象
     this.dataSource = new UnpooledDataSource();
   }
 
   @Override
   public void setProperties(Properties properties) {
     Properties driverProperties = new Properties();
-    MetaObject metaDataSource = SystemMetaObject.forObject(dataSource);
+    MetaObject metaDataSource = SystemMetaObject.forObject(dataSource); // 创建相应的元对象
     for (Object key : properties.keySet()) {
       String propertyName = (String) key;
       if (propertyName.startsWith(DRIVER_PROPERTY_PREFIX)) {
         String value = properties.getProperty(propertyName);
         driverProperties.setProperty(propertyName.substring(DRIVER_PROPERTY_PREFIX_LENGTH), value);
-      } else if (metaDataSource.hasSetter(propertyName)) {
+      } else if (metaDataSource.hasSetter(propertyName)) {  // 如果有相应的set方法，那么通过反射为其设置值，这里我们可以看到，有了反射模块，大大方便了值设置，而不用写一堆if-else判断
         String value = (String) properties.get(propertyName);
         Object convertedValue = convertValue(metaDataSource, propertyName, value);
         metaDataSource.setValue(propertyName, convertedValue);

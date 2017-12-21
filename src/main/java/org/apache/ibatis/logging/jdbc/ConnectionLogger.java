@@ -41,19 +41,21 @@ public final class ConnectionLogger extends BaseJdbcLogger implements Invocation
     this.connection = conn;
   }
 
+  // 增加日志输出
   @Override
   public Object invoke(Object proxy, Method method, Object[] params)
       throws Throwable {
     try {
+      // 如果调用的是从Object继承的方法，则不做处理，直接调用
       if (Object.class.equals(method.getDeclaringClass())) {
         return method.invoke(this, params);
       }    
       if ("prepareStatement".equals(method.getName())) {
-        if (isDebugEnabled()) {
+        if (isDebugEnabled()) { // 所有的动态代理，就是为了下面的日志输出，便于调式
           debug(" Preparing: " + removeBreakingWhitespace((String) params[0]), true);
         }        
         PreparedStatement stmt = (PreparedStatement) method.invoke(connection, params);
-        stmt = PreparedStatementLogger.newInstance(stmt, statementLog, queryStack);
+        stmt = PreparedStatementLogger.newInstance(stmt, statementLog, queryStack); // 继续生成 代理对象
         return stmt;
       } else if ("prepareCall".equals(method.getName())) {
         if (isDebugEnabled()) {

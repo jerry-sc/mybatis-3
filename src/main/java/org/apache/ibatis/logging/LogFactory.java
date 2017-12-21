@@ -18,6 +18,8 @@ package org.apache.ibatis.logging;
 import java.lang.reflect.Constructor;
 
 /**
+ * 通过适配器模式，按照顺序确定日志组件
+ *
  * @author Clinton Begin
  * @author Eduardo Macarron
  */
@@ -28,8 +30,14 @@ public final class LogFactory {
    */
   public static final String MARKER = "MYBATIS";
 
+  /**
+   * 记录当前使用的第三方日志组件所对应的适配器的构造方法
+   */
   private static Constructor<? extends Log> logConstructor;
 
+  /**
+   * 按顺序尝试加载日志实现
+   */
   static {
     tryImplementation(new Runnable() {
       @Override
@@ -118,9 +126,9 @@ public final class LogFactory {
   }
 
   private static void tryImplementation(Runnable runnable) {
-    if (logConstructor == null) {
+    if (logConstructor == null) { // 首先判断是否为空，表明只要一个找到了，不会继续找其他
       try {
-        runnable.run();
+        runnable.run(); // 由于调用的是run方法，相当于普通方法，所以不会另起线程
       } catch (Throwable t) {
         // ignore
       }

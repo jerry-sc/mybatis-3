@@ -33,12 +33,17 @@ import org.apache.ibatis.io.ResolverUtil;
 import org.apache.ibatis.io.Resources;
 
 /**
+ * 为类名添加一个别名，此类用于维护所有对应关系
+ *
  * @author Clinton Begin
  */
 public class TypeAliasRegistry {
 
   private final Map<String, Class<?>> TYPE_ALIASES = new HashMap<String, Class<?>>();
 
+  /**
+   *  mybaits 默认提供的别名
+   */
   public TypeAliasRegistry() {
     registerAlias("string", String.class);
 
@@ -139,7 +144,7 @@ public class TypeAliasRegistry {
   }
 
   public void registerAlias(Class<?> type) {
-    String alias = type.getSimpleName();
+    String alias = type.getSimpleName();  // 类的简单名称，这里就是我们通常直接用的类名
     Alias aliasAnnotation = type.getAnnotation(Alias.class);
     if (aliasAnnotation != null) {
       alias = aliasAnnotation.value();

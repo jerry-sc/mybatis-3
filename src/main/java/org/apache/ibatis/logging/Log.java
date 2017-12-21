@@ -16,6 +16,7 @@
 package org.apache.ibatis.logging;
 
 /**
+ * 日志统一接口类，其他日志实现，通过适配器解决
  * @author Clinton Begin
  */
 public interface Log {

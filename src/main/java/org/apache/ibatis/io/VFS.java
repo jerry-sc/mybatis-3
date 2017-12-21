@@ -28,6 +28,7 @@ import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 
 /**
+ * VFS（虚拟文件系统）用来查找指定路径下的资源
  * Provides a very simple API for accessing resources within an application server.
  * 
  * @author Ben Gunter
@@ -39,9 +40,12 @@ public abstract class VFS {
   public static final Class<?>[] IMPLEMENTATIONS = { JBoss6VFS.class, DefaultVFS.class };
 
   /** The list to which implementations are added by {@link #addImplClass(Class)}. */
-  public static final List<Class<? extends VFS>> USER_IMPLEMENTATIONS = new ArrayList<Class<? extends VFS>>();
+  public static final List<Class<? extends VFS>> USER_IMPLEMENTATIONS = new ArrayList<Class<? extends VFS>>();  // 也可以由用户指定自定义的文件系统
 
-  /** Singleton instance holder. */
+  /**
+   * ingleton instance holder.
+   * 使用静态内部类形式的懒汉式单例模式
+   * */
   private static class VFSHolder {
     static final VFS INSTANCE = createVFS();
 

@@ -19,14 +19,15 @@ import java.io.InputStream;
 import java.net.URL;
 
 /**
+ * 封装了多个类加载对象，按照顺序找到第一个可用的
  * A class to wrap access to multiple class loaders making them work as one
  *
  * @author Clinton Begin
  */
 public class ClassLoaderWrapper {
 
-  ClassLoader defaultClassLoader;
-  ClassLoader systemClassLoader;
+  ClassLoader defaultClassLoader; // 应用指定的默认类加载起
+  ClassLoader systemClassLoader;  //  系统classloader
 
   ClassLoaderWrapper() {
     try {
@@ -201,12 +202,17 @@ public class ClassLoaderWrapper {
 
   }
 
+  /**
+   * 指明了类加载的使用顺序
+   * @param classLoader
+   * @return
+   */
   ClassLoader[] getClassLoaders(ClassLoader classLoader) {
     return new ClassLoader[]{
-        classLoader,
-        defaultClassLoader,
-        Thread.currentThread().getContextClassLoader(),
-        getClass().getClassLoader(),
+        classLoader,  // 参数指定类加载器
+        defaultClassLoader, // 系统指定的默认类加载器
+        Thread.currentThread().getContextClassLoader(), // 当前线程绑定的类加载器
+        getClass().getClassLoader(),  // 加载当前类所使用的类加载器
         systemClassLoader};
   }
 

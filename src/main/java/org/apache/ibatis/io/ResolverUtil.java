@@ -54,15 +54,19 @@ import org.apache.ibatis.logging.LogFactory;
  * Collection&lt;ActionBean&gt; beans = resolver.getClasses();
  * </pre>
  *
+ * 工具类：根据指定的条件，查找指定包下的类；其中条件由Test接口提供，并提供了两个具体实现类
+ *
  * @author Tim Fennell
  */
 public class ResolverUtil<T> {
   /*
+   * 统一日志处理类
    * An instance of Log to use for logging in this class.
    */
   private static final Log log = LogFactory.getLog(ResolverUtil.class);
 
   /**
+   * 条件接口
    * A simple interface that specifies how to test classes to determine if they
    * are to be included in the results produced by the ResolverUtil.
    */
@@ -75,6 +79,7 @@ public class ResolverUtil<T> {
   }
 
   /**
+   * 查找指定类是否继承了parent指定的类，包括其本身
    * A Test that checks to see if each class is assignable to the provided class. Note
    * that this test will match the parent type itself if it is presented for matching.
    */
@@ -99,6 +104,7 @@ public class ResolverUtil<T> {
   }
 
   /**
+   * 查找指定类是否添加了指定注解的类
    * A Test that checks to see if each class is annotated with a specific annotation. If it
    * is, then the test returns true, otherwise false.
    */
@@ -122,7 +128,12 @@ public class ResolverUtil<T> {
     }
   }
 
-  /** The set of matches being accumulated. */
+  /**
+   * The set of matches being accumulated.
+   *
+   * 保存所有找到的类对象
+   *
+   * */
   private Set<Class<? extends T>> matches = new HashSet<Class<? extends T>>();
 
   /**
@@ -175,7 +186,7 @@ public class ResolverUtil<T> {
       return this;
     }
 
-    Test test = new IsA(parent);
+    Test test = new IsA(parent);  // 使用IsA作为条件，表明从给定的包路径下找到以parent为父类的所有类
     for (String pkg : packageNames) {
       find(test, pkg);
     }
@@ -204,6 +215,7 @@ public class ResolverUtil<T> {
   }
 
   /**
+   * 根据给定条件，从给定包中找到符合条件的类
    * Scans for classes starting at the package provided and descending into subpackages.
    * Each class is offered up to the Test as it is discovered, and if the Test returns
    * true the class is retained.  Accumulated classes can be fetched by calling

@@ -38,6 +38,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.reflection.Jdk;
 
 /**
+ * 负责管理所有TypeHandler对象
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */
