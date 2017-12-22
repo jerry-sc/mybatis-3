@@ -14,6 +14,8 @@
  *    limitations under the License.
  */
 /**
+ * 此模块主要用于创建映射文件与mapper接口之间的对应关系，防止用户出现拼写错误，导致错误直到运行期间才能发现。通过创建两者映射，使得错误最早能在启动时发现，因为启动时会验证
+ * 映射文件中SQL的id与映射文件的方法名称是否一致，如果不一致，会导致启动失败
  * Bings mapper interfaces with mapped statements
  */
 package org.apache.ibatis.binding;
