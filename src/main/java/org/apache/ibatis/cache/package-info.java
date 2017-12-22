@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 /**
+ * 内部大量使用了包装模式实现
  * Base package for caching stuff
  */
 package org.apache.ibatis.cache;
