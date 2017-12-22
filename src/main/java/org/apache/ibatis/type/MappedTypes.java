@@ -22,6 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 该注解表明，该TypeHandler能够处理的java类型, value值表示能够处理的Java类型
  * @author Eduardo Macarron
  */
 @Documented

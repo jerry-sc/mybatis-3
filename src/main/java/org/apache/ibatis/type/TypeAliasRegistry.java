@@ -118,7 +118,7 @@ public class TypeAliasRegistry {
       if (TYPE_ALIASES.containsKey(key)) {
         value = (Class<T>) TYPE_ALIASES.get(key);
       } else {
-        value = (Class<T>) Resources.classForName(string);
+        value = (Class<T>) Resources.classForName(string);  // 如果别名缓存中没有找到，则尝试直接获取此类
       }
       return value;
     } catch (ClassNotFoundException e) {

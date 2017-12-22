@@ -25,6 +25,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
+ * 使用离线校验方式校验
  * Offline entity resolver for the MyBatis DTDs
  * 
  * @author Clinton Begin

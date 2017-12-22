@@ -32,7 +32,7 @@ import org.apache.ibatis.reflection.property.PropertyTokenizer;
 public class BeanWrapper extends BaseWrapper {
 
   /**
-   * JavaBean 对象
+   *  原对象
    */
   private final Object object;
   private final MetaClass metaClass;

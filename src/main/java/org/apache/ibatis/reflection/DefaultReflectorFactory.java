@@ -18,6 +18,9 @@ package org.apache.ibatis.reflection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+/**
+ * 它不是单例全局唯一
+ */
 public class DefaultReflectorFactory implements ReflectorFactory {
     private boolean classCacheEnabled = true;
     // 缓存实现
