@@ -117,6 +117,9 @@ public class ParamNameResolver {
      * ...).
      * </p>
      * 接受用户传入的实参列表，并 将实参与其对应名称相关联, 返回参数名称与实参列表的映射关系
+     * 返回值可能有两种类型：
+     * 1）当只有一个参数，并且参数中没有注解时，那么直接返回该对象
+     * 2) 除此之外，返回map
      */
     public Object getNamedParams(Object[] args) {
         final int paramCount = names.size();

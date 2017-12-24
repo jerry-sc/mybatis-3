@@ -94,7 +94,7 @@ public class XMLMapperBuilder extends BaseBuilder {
             configuration.addLoadedResource(resource);  // 标记该资源文件已经加载过
             bindMapperForNamespace();   // 注册mapper接口
         }
-
+        // 由于是从头到尾解析，有时引用的节点可能还没有被解析，造成失败，mybaits会将这些解析失败的节点加入到失败队列中，然后在最后做一次尝试
         parsePendingResultMaps();
         parsePendingCacheRefs();
         parsePendingStatements();
@@ -421,11 +421,15 @@ public class XMLMapperBuilder extends BaseBuilder {
         return null;
     }
 
+    /**
+     * 完成映射文件与对应mapper接口的绑定
+     */
     private void bindMapperForNamespace() {
         String namespace = builderAssistant.getCurrentNamespace();
         if (namespace != null) {
             Class<?> boundType = null;
             try {
+                // 找到命名空间对应的类型
                 boundType = Resources.classForName(namespace);
             } catch (ClassNotFoundException e) {
                 //ignore, bound type is not required
