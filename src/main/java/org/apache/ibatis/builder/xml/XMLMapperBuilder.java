@@ -116,7 +116,7 @@ public class XMLMapperBuilder extends BaseBuilder {
             parameterMapElement(context.evalNodes("/mapper/parameterMap"));
             resultMapElements(context.evalNodes("/mapper/resultMap"));
             sqlElement(context.evalNodes("/mapper/sql"));   // 解析SQL节点
-            buildStatementFromContext(context.evalNodes("select|insert|update|delete"));
+            buildStatementFromContext(context.evalNodes("select|insert|update|delete"));    // XMLStatementBuilder 由该类负责解析SQL语句
         } catch (Exception e) {
             throw new BuilderException("Error parsing Mapper XML. Cause: " + e, e);
         }

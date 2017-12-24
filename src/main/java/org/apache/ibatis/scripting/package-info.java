@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 /**
+ * 此包中主要用于生成语言相关的脚本
  * Base package for languages.
  */
 package org.apache.ibatis.scripting;

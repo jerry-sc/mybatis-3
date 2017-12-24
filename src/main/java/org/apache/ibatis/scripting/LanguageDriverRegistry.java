@@ -25,7 +25,7 @@ public class LanguageDriverRegistry {
 
   private final Map<Class<?>, LanguageDriver> LANGUAGE_DRIVER_MAP = new HashMap<Class<?>, LanguageDriver>();
 
-  private Class<?> defaultDriverClass;
+  private Class<?> defaultDriverClass;  // 默认脚本构建类
 
   public void register(Class<?> cls) {
     if (cls == null) {
