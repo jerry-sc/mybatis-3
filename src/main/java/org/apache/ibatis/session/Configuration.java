@@ -146,20 +146,33 @@ public class Configuration {
     protected final LanguageDriverRegistry languageRegistry = new LanguageDriverRegistry();
 
     protected final Map<String, MappedStatement> mappedStatements = new StrictMap<MappedStatement>("Mapped Statements collection");
+    /**
+     * 记录缓存Id与缓存对象的映射关系，id默认为映射文件的namespace
+     */
     protected final Map<String, Cache> caches = new StrictMap<Cache>("Caches collection");
+    /**
+     * 记录所有ResultMap的映射关系，ID为namespace.resultMapId
+     */
     protected final Map<String, ResultMap> resultMaps = new StrictMap<ResultMap>("Result Maps collection");
     protected final Map<String, ParameterMap> parameterMaps = new StrictMap<ParameterMap>("Parameter Maps collection");
     protected final Map<String, KeyGenerator> keyGenerators = new StrictMap<KeyGenerator>("Key Generators collection");
 
+    /**
+     * 记录已经加载过的资源文件，例如mapper文件等
+     */
     protected final Set<String> loadedResources = new HashSet<String>();
     protected final Map<String, XNode> sqlFragments = new StrictMap<XNode>("XML fragments parsed from previous mappers");
 
     protected final Collection<XMLStatementBuilder> incompleteStatements = new LinkedList<XMLStatementBuilder>();
+    /**
+     * 记录缓存解析时出现的异常，由于存在依赖关系，但是解析时，依赖没有被提前解析导致失败，处理策略，是先记录下来，稍后重试
+     */
     protected final Collection<CacheRefResolver> incompleteCacheRefs = new LinkedList<CacheRefResolver>();
     protected final Collection<ResultMapResolver> incompleteResultMaps = new LinkedList<ResultMapResolver>();
     protected final Collection<MethodResolver> incompleteMethods = new LinkedList<MethodResolver>();
 
     /*
+     * key是<cache-ref>所在的namespace，value是要依赖的namespace
      * A map holds cache-ref relationship. The key is the namespace that
      * references a cache bound to another namespace and the value is the
      * namespace which the actual cache is bound to.
@@ -182,6 +195,7 @@ public class Configuration {
         typeAliasRegistry.registerAlias("POOLED", PooledDataSourceFactory.class);
         typeAliasRegistry.registerAlias("UNPOOLED", UnpooledDataSourceFactory.class);
 
+        // 缓存实现具体方式
         typeAliasRegistry.registerAlias("PERPETUAL", PerpetualCache.class);
         typeAliasRegistry.registerAlias("FIFO", FifoCache.class);
         typeAliasRegistry.registerAlias("LRU", LruCache.class);
@@ -844,10 +858,14 @@ public class Configuration {
         }
     }
 
+    /**
+     * 继承hashmap，添加时如果key已经存在，那么抛出异常
+     * @param <V>
+     */
     protected static class StrictMap<V> extends HashMap<String, V> {
 
         private static final long serialVersionUID = -4950446264854982944L;
-        private final String name;
+        private final String name;  // map名称
 
         public StrictMap(String name, int initialCapacity, float loadFactor) {
             super(initialCapacity, loadFactor);
@@ -897,11 +915,19 @@ public class Configuration {
             return value;
         }
 
+        /**
+         * 取最后一项作为shortKey
+         * @param key
+         * @return
+         */
         private String getShortName(String key) {
             final String[] keyParts = key.split("\\.");
             return keyParts[keyParts.length - 1];
         }
 
+        /**
+         * 使用subject字段记录二义性的key
+         */
         protected static class Ambiguity {
             final private String subject;
 

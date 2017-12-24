@@ -94,6 +94,7 @@ public final class TypeHandlerRegistry {
     register(JdbcType.DOUBLE, new DoubleTypeHandler());
 
     register(Reader.class, new ClobReaderTypeHandler());
+    // 两个参数的，会默认将null作为jdbc类型，注册进去
     register(String.class, new StringTypeHandler());
     register(String.class, JdbcType.CHAR, new StringTypeHandler());
     register(String.class, JdbcType.CLOB, new ClobTypeHandler());
