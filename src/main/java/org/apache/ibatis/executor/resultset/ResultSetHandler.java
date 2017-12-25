@@ -23,14 +23,27 @@ import java.sql.Statement;
 import java.util.List;
 
 /**
+ * 处理查询得到的结果
  * @author Clinton Begin
  */
 public interface ResultSetHandler {
 
+    /**
+     * 处理结果集，生成相应的对象集合
+     * @param stmt
+     * @param <E>
+     * @return
+     * @throws SQLException
+     */
     <E> List<E> handleResultSets(Statement stmt) throws SQLException;
 
     <E> Cursor<E> handleCursorResultSets(Statement stmt) throws SQLException;
 
+    /**
+     * 处理存储过程产生的多结果集
+     * @param cs
+     * @throws SQLException
+     */
     void handleOutputParameters(CallableStatement cs) throws SQLException;
 
 }
