@@ -197,6 +197,7 @@ public abstract class BaseExecutor implements Executor {
         if (deferredLoad.canLoad()) {
             deferredLoad.load();
         } else {
+            // 如果还没有完全加载，那么放入延迟加载队列
             deferredLoads.add(new DeferredLoad(resultObject, property, key, localCache, configuration, targetType));
         }
     }
@@ -334,13 +335,14 @@ public abstract class BaseExecutor implements Executor {
 
     private <E> List<E> queryFromDatabase(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
         List<E> list;
+        // 开始查询前，会先设置一个占位符，查询完成后，再放入
         localCache.putObject(key, EXECUTION_PLACEHOLDER);
         try {
             list = doQuery(ms, parameter, rowBounds, resultHandler, boundSql);
         } finally {
             localCache.removeObject(key);
         }
-        localCache.putObject(key, list);
+        localCache.putObject(key, list);    //  将结果放入一级缓存
         if (ms.getStatementType() == StatementType.CALLABLE) {
             localOutputParameterCache.putObject(key, parameter);
         }
@@ -387,10 +389,12 @@ public abstract class BaseExecutor implements Executor {
             this.targetType = targetType;
         }
 
+        // 是否已经完全就爱在
         public boolean canLoad() {
             return localCache.getObject(key) != null && localCache.getObject(key) != EXECUTION_PLACEHOLDER;
         }
 
+        // 已经完全加载了，那么设置到外层响应属性中
         public void load() {
             @SuppressWarnings("unchecked")
             // we suppose we get back a List
